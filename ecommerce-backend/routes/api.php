@@ -3,7 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JWTController;
-use App\Http\Controllers\itemController;
+use App\Http\Controllers\ItemController;
+use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\CategoryController;
 
 Route::group(['middleware' => 'api'], function($router) {
     Route::post('/register', [JWTController::class, 'register']);
@@ -14,10 +16,16 @@ Route::group(['middleware' => 'api'], function($router) {
 });
 
 Route::group(['prefix'=>'user'], function(){
-    Route::get('/items', [ItemController::class, 'getItems']);
+    Route::get('/allitems', [ItemController::class, 'getItems']);
     Route::post('/item', [ItemController::class, 'getItemById']);
+    Route::post('/categoryitems', [ItemController::class, 'getItemsByCategoryId']);
+    Route::post('/setfavorite', [FavoriteController::class, 'setFavorite']);
+    Route::get('/getcategories', [CategoryController::class, 'getCategories']);
 });
 
 Route::group(['prefix'=>'admin'], function(){
     Route::post('/additem', [ItemController::class, 'addItem']);
+    Route::post('/addcategory', [CategoryController::class, 'addCategory']);
+    Route::get('/getcategories', [CategoryController::class, 'getCategories']);
 });
+

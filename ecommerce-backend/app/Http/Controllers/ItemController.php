@@ -26,14 +26,25 @@ class ItemController extends Controller
             "item" => $item
         ], 200);
     }
-    
+
+
+    public function getItemsByCategoryId(Request $request){
+        $id = $request->category_id;
+        $items = Item::all()->where('category_id',$id);
+       
+        return response()->json([
+            "success" => true,
+            "items" => $items
+        ], 200);
+    }
+
 
     public function addItem(Request $request){
-        
         $item = new Item;
         $item->name = $request->name;
         $item->price = $request->price;
         $item->image = $request->image;
+        $item->category_id = $request->category_id;
         $item->save();
            
         return response()->json([
