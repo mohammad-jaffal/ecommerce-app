@@ -28,4 +28,3 @@ Route::group(['prefix'=>'admin'], function(){
     Route::post('/addcategory', [CategoryController::class, 'addCategory']);
     Route::get('/getcategories', [CategoryController::class, 'getCategories']);
 });
-
