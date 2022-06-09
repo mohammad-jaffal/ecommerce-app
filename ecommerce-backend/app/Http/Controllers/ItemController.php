@@ -55,43 +55,20 @@ class ItemController extends Controller
     }
 
 
-
-    // public function getFavorites(Request $request){
-    //     $user_id = $request->user_id;
-    //     // $items = Item::favorites()->user()->where('id',$user_id);
-    //     $user = User::all()->favorites();
-        
-    //     return response()->json([
-    //         "success" => true,
-    //         "items" => $user
-    //     ], 200);
-    // }
-
-
     public function getFavorites(Request $request){
         $user_id = $request->user_id;
-        $favs = User::find($user_id)->favorites;
-        // $fav_id = $favs->id;
-        // echo $fav_id;
-        // $item = Favorite::find(2)->item;
-        $items = [];
-        foreach ($favs as $fav) {
-            $fav_id = $fav->id;
-            echo $fav_id;
-            echo "-";
-            $item = Favorite::find($fav_id)->item;
-            array_push($items, $item);
-        }
-        
-        
+        $items = Item::find(User::find($user_id)->favorite->pluck('item_id'));
+
         return response()->json([
             "success" => true,
-            // "items" => $fav_id,
-            "favs" => $items,
+            "items" => $items,
         ], 200);
 
 
     }
+
+
+
 
 
 }

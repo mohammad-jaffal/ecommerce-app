@@ -21,6 +21,7 @@ Route::group(['prefix'=>'user'], function(){
     Route::post('/categoryitems', [ItemController::class, 'getItemsByCategoryId']);
     Route::post('/setfavorite', [FavoriteController::class, 'setFavorite']);
     Route::post('/getfavorites', [ItemController::class, 'getFavorites']);
+    Route::post('/charbel', [ItemController::class, 'charbel']);
     Route::get('/getcategories', [CategoryController::class, 'getCategories']);
 });
 

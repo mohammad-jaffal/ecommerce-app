@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use App\Models\Favorite;
+use App\Models\Item;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -34,10 +35,10 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
-
-    public function favorites()
+    public function favorite()
     {
         return $this->hasMany(Favorite::class);
     }
-    
+   
+
 }
