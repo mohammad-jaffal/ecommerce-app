@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JWTController;
+use App\Http\Controllers\itemController;
 
 Route::group(['middleware' => 'api'], function($router) {
     Route::post('/register', [JWTController::class, 'register']);
@@ -10,4 +11,13 @@ Route::group(['middleware' => 'api'], function($router) {
     Route::post('/logout', [JWTController::class, 'logout']);
     Route::post('/refresh', [JWTController::class, 'refresh']);
     Route::post('/profile', [JWTController::class, 'profile']);
+});
+
+Route::group(['prefix'=>'user'], function(){
+    Route::get('/items', [ItemController::class, 'getItems']);
+    Route::post('/item', [ItemController::class, 'getItemById']);
+});
+
+Route::group(['prefix'=>'admin'], function(){
+    Route::post('/additem', [ItemController::class, 'addItem']);
 });
