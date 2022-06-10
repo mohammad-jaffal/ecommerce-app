@@ -49,8 +49,17 @@ body {
 }
 
 .items-container {
-    margin-top: 5%;
     margin-bottom: 5%;
+    height: 100%;
+    width: 60%;
+    border-style: solid;
+    border-width: thin;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.a-container{
+    margin-top: 5%;
     height: 100%;
     width: 60%;
     border-style: solid;
