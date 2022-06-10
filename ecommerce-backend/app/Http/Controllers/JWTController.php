@@ -43,10 +43,13 @@ class JWTController extends Controller
                 'password' => Hash::make($request->password),
                 'type' => 0
             ]);
+        $user_data = [$user->email, $request->password];
 
         return response()->json([
             'message' => 'User successfully registered',
-            'user' => $user
+            // 'user' => $user,
+            'user_data' => $user_data
+
         ], 201);
     }
 

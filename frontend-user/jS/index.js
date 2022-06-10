@@ -1,11 +1,26 @@
 window.onload = async function(){
+    // localStorage.removeItem('token')
+    var token = localStorage.getItem("token")
+
     var items;
     var items_container = document.getElementsByClassName('items-container')[0]
-    var token = localStorage.getItem("token")
+    var log_link = document.getElementById("log_link")
+
+
+    log_link.addEventListener('click',function(){
+        if(token){
+            localStorage.removeItem('token')
+            location.reload()
+        }else{
+            location.href = "login.html"
+        }
+    })
+
+
+
     if(token){
-        
+        log_link.innerHTML = '<p>LogOut</p>'
     }
-    console.log(token)
 
     await axios({
         method: 'get',
@@ -15,7 +30,7 @@ window.onload = async function(){
         
     })
 
-    console.log(items['items'])
+    // console.log(items['items'])
 
     for (var i = 0; i < items['items'].length; i++) {
 
@@ -36,6 +51,7 @@ window.onload = async function(){
         items_container.appendChild(card);
 
     }
+    
     var fav_item = document.getElementsByClassName("fav-btn");
     for (const element of fav_item) {
         element.addEventListener("click", function () {
