@@ -13,16 +13,20 @@ Route::group(['middleware' => 'api'], function($router) {
     Route::post('/logout', [JWTController::class, 'logout']);
     Route::post('/refresh', [JWTController::class, 'refresh']);
     Route::post('/profile', [JWTController::class, 'profile']);
+    
+    Route::post('/setfavorite', [FavoriteController::class, 'setFavorite'])->middleware('auth');
+    
 });
 
 Route::group(['prefix'=>'user'], function(){
+    
     Route::get('/allitems', [ItemController::class, 'getItems']);
     Route::post('/item', [ItemController::class, 'getItemById']);
     Route::post('/categoryitems', [ItemController::class, 'getItemsByCategoryId']);
     Route::post('/setfavorite', [FavoriteController::class, 'setFavorite']);
     Route::post('/getfavorites', [ItemController::class, 'getFavorites']);
-    Route::post('/charbel', [ItemController::class, 'charbel']);
     Route::get('/getcategories', [CategoryController::class, 'getCategories']);
+    
 });
 
 Route::group(['prefix'=>'admin'], function(){

@@ -36,7 +36,6 @@ window.onload = async function () {
         })
 
 
-
         // get favorite items
         var fav_data = new FormData()
         fav_data.append('user_id', user_id)
@@ -60,7 +59,6 @@ window.onload = async function () {
 
 
     }
-
 
 
     var cat_filter = document.getElementById("categories")
@@ -106,6 +104,14 @@ window.onload = async function () {
         items_container.innerHTML = ""
         for (const a in items['items']) {
             var item = items['items'][a];
+
+            var fav_pre = ``
+            if (fav_ids.includes(item['id'])) {
+                fav_pre = `style="background-color:red;"`
+            }
+
+
+
             const card = document.createElement('div');
             card.className = "list-item"
             card.innerHTML = `<img src="${item['image']}" class="banner-image">
@@ -114,7 +120,7 @@ window.onload = async function () {
                                             <p>name: ${item['name']}</p>
                                             <p>price: ${item['price']} $</p>
                                         </div>
-                                        <button id="item_${item['id']}" class="fav-btn">fav</button>
+                                        <button id="item_${item['id']}" class="fav-btn" ${fav_pre}>fav</button>
                                         </div>
                                     </div>`;
 
@@ -133,17 +139,35 @@ window.onload = async function () {
             }
 
 
-            element.addEventListener("click", function () {
-                console.log(element.id)
+            element.addEventListener("click", async function () {
+                // console.log(element.id)
+                let fav_data = new FormData()
+                fav_data.append('user_id', user_id)
+                fav_data.append('item_id', eid)
+                await axios({
+                    method: 'post',
+                    url: 'http://127.0.0.1:8000/api/setfavorite',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/json'
+                    },
+                    data: fav_data
+                }).then(function (response) {
+                    element.style.backgroundColor = "red"
+                    fav_ids.push(eid)
+                    // console.log(response)
+
+                }).catch(function (err) {
+                    if (err.response['statusText'] == 'Unauthorized') {
+                        alert("Login first")
+                    }
+                })
+
+
+
             })
         }
     })
-
-
-
-
-
-
 
 
 
@@ -189,9 +213,34 @@ window.onload = async function () {
         }
 
 
-        element.addEventListener("click", function () {
-            console.log(eid)
+        element.addEventListener("click", async function () {
+            // console.log(eid)
+
+
+            let fav_data = new FormData()
+            fav_data.append('user_id', user_id)
+            fav_data.append('item_id', eid)
+            await axios({
+                method: 'post',
+                url: 'http://127.0.0.1:8000/api/setfavorite',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/json'
+                },
+                data: fav_data
+            }).then(function (response) {
+                element.style.backgroundColor = "red"
+                fav_ids.push(eid)
+                // console.log(response)
+
+            }).catch(function (err) {
+                if (err.response['statusText'] == 'Unauthorized') {
+                    alert("Login first")
+                }
+            })
+
+
+
         })
     }
-
 }
