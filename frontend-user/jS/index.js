@@ -1,10 +1,12 @@
 window.onload = async function () {
     // localStorage.removeItem('token')
     var token = localStorage.getItem("token")
-
     var items_container = document.getElementsByClassName('items-container')[0]
     var log_link = document.getElementById("log_link")
-
+    var favorite_items;
+    var user_id;
+    var items;
+    console.log(token)
     log_link.addEventListener('click', function () {
         if (token) {
             localStorage.removeItem('token')
@@ -16,9 +18,31 @@ window.onload = async function () {
 
     if (token) {
         log_link.innerHTML = '<p>LogOut</p>'
+
+        // get user id
+
+        await axios({
+            method: 'post',
+            url: 'http://127.0.0.1:8000/api/profile',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/json'
+            },
+        }).then(function (response) {
+            user_id = response.data["id"]
+        }).catch(function (err) {
+            console.log(err)
+        })
+
+
+
+
+
+
+
     }
 
-    var items;
+
 
     var cat_filter = document.getElementById("categories")
 
@@ -44,7 +68,7 @@ window.onload = async function () {
     // on filter category
     document.getElementById("filter_btn").addEventListener('click', async function () {
         var cat_id = cat_filter.value
-        if(cat_id=="all"){
+        if (cat_id == "all") {
             location.reload()
         }
 
@@ -74,17 +98,24 @@ window.onload = async function () {
                                         <button id="item_${item['id']}" class="fav-btn">fav</button>
                                         </div>
                                     </div>`;
-    
+
             items_container.appendChild(card);
         }
-    
-        var fav_item = document.getElementsByClassName("fav-btn");
-        for (const element of fav_item) {
+
+        var fav_btns = document.getElementsByClassName("fav-btn");
+        for (const element of fav_btns) {
             element.addEventListener("click", function () {
                 console.log(element.id)
             })
         }
     })
+
+
+
+
+
+
+
 
 
 
@@ -115,8 +146,8 @@ window.onload = async function () {
         items_container.appendChild(card);
     }
 
-    var fav_item = document.getElementsByClassName("fav-btn");
-    for (const element of fav_item) {
+    var fav_btns = document.getElementsByClassName("fav-btn");
+    for (const element of fav_btns) {
         element.addEventListener("click", function () {
             console.log(element.id)
         })
