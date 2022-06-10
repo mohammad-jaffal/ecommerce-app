@@ -17,7 +17,7 @@ window.onload = async function(){
         var item = items['items'][i];
         const card = document.createElement('div');
         card.className = "list-item"
-        card.innerHTML =    `<img src="./assets/images/test.jpg" class="banner-image">
+        card.innerHTML =    `<img src="${item['image']}" class="banner-image">
                             <div class="item-info-container">
                                 <div>
                                     <p>name: ${item['name']}</p>
@@ -37,6 +37,5 @@ window.onload = async function(){
             console.log(element.id)
         })
     }
-
 
 }
