@@ -1,6 +1,11 @@
 window.onload = async function(){
     var items;
     var items_container = document.getElementsByClassName('items-container')[0]
+    var token = localStorage.getItem("token")
+    if(token){
+        
+    }
+    console.log(token)
 
     await axios({
         method: 'get',
@@ -21,7 +26,7 @@ window.onload = async function(){
                             <div class="item-info-container">
                                 <div>
                                     <p>name: ${item['name']}</p>
-                                    <p>price: ${item['price']}</p>
+                                    <p>price: ${item['price']} $</p>
                                 </div>
                                 <button id="item_${item['id']}" class="fav-btn">fav</button>
                                 </div>

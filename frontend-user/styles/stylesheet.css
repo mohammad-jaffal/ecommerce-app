@@ -11,7 +11,7 @@ body {
 
 
 .global-container {
-    background-color: aqua;
+    /* background-color: aqua; */
     height: 100%;
     width: 100%;
     display: flex;
@@ -57,7 +57,7 @@ body {
 }
 
 .category-container {
-    background-color: aqua;
+    /* background-color: aqua; */
     width: 100%;
     display: flex;
     justify-content: space-between;
