@@ -60,13 +60,15 @@ body {
     display: flex;
     justify-content: space-between;
 }
+
+
 .category-container>div {
     font-size: 20px;
     font-weight: bold;
 }
 
 
-.restaurant-list-item {
+.list-item {
     margin-left: 50px;
     margin-top: 50px;
     background-color: rgba(0, 0, 0, 0.2);
@@ -83,17 +85,11 @@ body {
     overflow: hidden;
 }
 
-.restaurant-image {
-    height: 200px;
-    width: auto;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    border-style: solid;
-    border-width: thin;
-
-}
 
 .item-info-container {
     /* background-color: bisque; */
     height: fit-content;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
