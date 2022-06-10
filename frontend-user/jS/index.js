@@ -6,6 +6,7 @@ window.onload = async function () {
     var favorite_items;
     var user_id;
     var items;
+    var fav_ids=[];
     console.log(token)
     log_link.addEventListener('click', function () {
         if (token) {
@@ -36,8 +37,26 @@ window.onload = async function () {
 
 
 
+        // get favorite items
+        var fav_data = new FormData()
+        fav_data.append('user_id', user_id)
 
+        await axios({
+            method: 'post',
+            url: 'http://127.0.0.1:8000/api/user/getfavorites',
+            data: fav_data
+        }).then(function (response) {
+            favorite_items = response.data['items'];
+            // console.log(favorite_items[0]['id'])
+        })
 
+        for( const item of favorite_items){
+            fav_ids.push(item['id'])
+        }
+        // console.log(fav_ids)
+        // if(fav_ids.includes(8)){
+        //     console.log("its in")
+        // }
 
 
     }
@@ -130,7 +149,9 @@ window.onload = async function () {
 
     items_container.innerHTML = ""
     for (var i = 0; i < items['items'].length; i++) {
+        
         var item = items['items'][i];
+
         const card = document.createElement('div');
         card.className = "list-item"
         card.innerHTML = `<img src="${item['image']}" class="banner-image">
@@ -148,6 +169,8 @@ window.onload = async function () {
 
     var fav_btns = document.getElementsByClassName("fav-btn");
     for (const element of fav_btns) {
+        
+
         element.addEventListener("click", function () {
             console.log(element.id)
         })
