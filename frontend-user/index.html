@@ -1,30 +1,47 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>login</title>
-        <link rel="stylesheet" href="styles/stylesheet.css">
-        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    </head>
-    <body>
-        <div class="global-container">
-            <div class="header-container">
-                <div class="header">
-                    <div class="header-logo"><h1>me-shop</h1></div>
-                    <div class="header-option"><p>Home</p></div>
-                    <div class="header-option"><p>About Us</p></div>
-                    <div class="header-option" id="log_link"><p>LogIn</p></div>
-                    
+
+<head>
+    <title>login</title>
+    <link rel="stylesheet" href="styles/stylesheet.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+
+<body>
+    <div class="global-container">
+        <div class="header-container">
+            <div class="header">
+                <div class="header-logo">
+                    <h1>me-shop</h1>
                 </div>
-            </div>
-            <div class="items-container">
-                <div class="category-container">
-                    <div>All</div>
-                    <div>Filter</div>
+                <div class="header-option">
+                    <p>Home</p>
+                </div>
+                <div class="header-option">
+                    <p>About Us</p>
+                </div>
+                <div class="header-option" id="log_link">
+                    <p>LogIn</p>
                 </div>
             </div>
         </div>
-        <script src="./jS/index.js"></script>
-    </body>
+
+
+
+        <div class="items-container">
+            <div class="category-container">
+                <div>
+                    <label>Category</label>
+                    <select id="categories">
+                        <option value="all">All</option>
+                    </select>
+                    <button id="filter_btn">Filter</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script src="./jS/index.js"></script>
+</body>
+
 </html>
-
-

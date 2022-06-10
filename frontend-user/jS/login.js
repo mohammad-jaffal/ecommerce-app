@@ -24,9 +24,8 @@ window.onload = function () {
     var li_password = document.getElementById("li_password");
 
 
-
+    // log in
     li_btn.addEventListener('click', function () {
-
 
         if (li_email.value == "" || li_password.value == "") {
             alert("fill all")
@@ -58,8 +57,8 @@ window.onload = function () {
     var su_btn = document.getElementById("su_btn");
 
 
+    // sign up
     su_btn.addEventListener('click', function () {
-
 
         if (su_name.value == "" || su_email.value == "" || su_password.value == "" || su_confirm_password.value == "") {
             alert("fill all")
@@ -76,6 +75,9 @@ window.onload = function () {
                     url: 'http://127.0.0.1:8000/api/register',
                     data: su_data,
                 }).then(function (response) {
+
+                    //auto login after signup
+
                     var temp_email = response.data['user_data'][0]
                     var temp_pass = response.data['user_data'][1]
 
@@ -90,7 +92,7 @@ window.onload = function () {
                         var token = response.data['access_token'];
                         localStorage.setItem('token', token)
                         location.href = "index.html"
-        
+
                     }).catch(function (err) {
                         alert("didnt work")
                     })
@@ -98,7 +100,7 @@ window.onload = function () {
                 }).catch(function (err) {
                     alert("didnt work")
                 })
-            }else{
+            } else {
                 alert("password dont match")
             }
         }
