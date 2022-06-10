@@ -6,8 +6,8 @@ window.onload = async function () {
     var favorite_items;
     var user_id;
     var items;
-    var fav_ids=[];
-    console.log(token)
+    var fav_ids = [];
+    // console.log(token)
     log_link.addEventListener('click', function () {
         if (token) {
             localStorage.removeItem('token')
@@ -50,7 +50,7 @@ window.onload = async function () {
             // console.log(favorite_items[0]['id'])
         })
 
-        for( const item of favorite_items){
+        for (const item of favorite_items) {
             fav_ids.push(item['id'])
         }
         // console.log(fav_ids)
@@ -123,6 +123,16 @@ window.onload = async function () {
 
         var fav_btns = document.getElementsByClassName("fav-btn");
         for (const element of fav_btns) {
+
+
+            let eid = element.id.split('_')[1]
+            eid = parseInt(eid)
+
+            if (fav_ids.includes(eid)) {
+                element.style.backgroundColor = "red"
+            }
+
+
             element.addEventListener("click", function () {
                 console.log(element.id)
             })
@@ -149,7 +159,7 @@ window.onload = async function () {
 
     items_container.innerHTML = ""
     for (var i = 0; i < items['items'].length; i++) {
-        
+
         var item = items['items'][i];
 
         const card = document.createElement('div');
@@ -168,19 +178,20 @@ window.onload = async function () {
     }
 
     var fav_btns = document.getElementsByClassName("fav-btn");
+
     for (const element of fav_btns) {
-        
+
+        let eid = element.id.split('_')[1]
+        eid = parseInt(eid)
+
+        if (fav_ids.includes(eid)) {
+            element.style.backgroundColor = "red"
+        }
+
 
         element.addEventListener("click", function () {
-            console.log(element.id)
+            console.log(eid)
         })
     }
-
-
-
-
-
-
-
 
 }
