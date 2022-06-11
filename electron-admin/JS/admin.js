@@ -85,6 +85,8 @@ window.onload = async function () {
                     data.append('image', "data:image/png;base64," + base64String);
                     data.append('category_id', cat_id);
 
+
+
                     axios({
                         method: 'post',
                         url: 'http://127.0.0.1:8000/api/admin/additem',

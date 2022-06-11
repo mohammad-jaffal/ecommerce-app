@@ -121,7 +121,7 @@ window.onload = async function () {
                 // check if item is favorited by user and set it red if yes
                 var fav_pre = ``
                 if (fav_ids.includes(item['id'])) {
-                    fav_pre = `style="background-color:red;"`
+                    fav_pre = `style="color:red;"`
                 }
 
 
@@ -134,7 +134,7 @@ window.onload = async function () {
                                             <p class="item-name">${item['name']}</p>
                                             <p class="item-price">${item['price']} $</p>
                                         </div>
-                                        <button id="item_${item['id']}" class="fav-btn" ${fav_pre}>fav</button>
+                                        <button id="item_${item['id']}" class="fav-btn" ${fav_pre}>❤</button>
                                         </div>
                                     </div>`;
 
@@ -168,7 +168,7 @@ window.onload = async function () {
                         data: fav_data
                     }).then(function (response) {
                         // apped the item to the favorited items list
-                        element.style.backgroundColor = "red"
+                        element.style.color = "red"
                         fav_ids.push(eid)
 
                     }).catch(function (err) {
@@ -207,6 +207,7 @@ window.onload = async function () {
 
 
     async function populateAll() {
+        items_container.innerHTML = ""
         
         document.body.style.backgroundImage = `url('./assets/images/0.jpg')`;
 
@@ -215,7 +216,7 @@ window.onload = async function () {
             var item = all_items['items'][i];
             var fav_pre = ``
             if (fav_ids.includes(item['id'])) {
-                fav_pre = `style="background-color:red;"`
+                fav_pre = `style="color:red;"`
             }
 
             const card = document.createElement('div');
@@ -226,7 +227,7 @@ window.onload = async function () {
                                             <p class="item-name">${item['name']}</p>
                                             <p class="item-price">${item['price']} $</p>
                                         </div>
-                                        <button id="item_${item['id']}" class="fav-btn" ${fav_pre}>fav</button>
+                                        <button id="item_${item['id']}" class="fav-btn" ${fav_pre}>❤</button>
                                         </div>
                                     </div>`;
 
@@ -261,7 +262,7 @@ window.onload = async function () {
                     },
                     data: fav_data
                 }).then(function (response) {
-                    element.style.backgroundColor = "red"
+                    element.style.color = "red"
                     fav_ids.push(eid)
                     // console.log(response)
 
