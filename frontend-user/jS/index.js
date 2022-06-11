@@ -7,7 +7,8 @@ window.onload = async function () {
     var user_id;
     var all_items;
     var fav_ids = [];
-    
+    var glob = document.getElementById("glob")
+
     // console.log(token)
     log_link.addEventListener('click', async function () {
         if (token) {
@@ -67,7 +68,7 @@ window.onload = async function () {
         for (const item of favorite_items) {
             fav_ids.push(item['id'])
         }
-       
+
 
 
     }
@@ -99,86 +100,87 @@ window.onload = async function () {
         var cat_id = cat_filter.value
         if (cat_id == "all") {
             populateAll()
-        }else{
+        } else {
+            document.body.style.backgroundImage = `url('./assets/images/${cat_id}.jpg')`;
 
-        // get items by category name
-        var cat_data = new FormData()
-        cat_data.append('category_id', cat_id)
+            // get items by category name
+            var cat_data = new FormData()
+            cat_data.append('category_id', cat_id)
 
-        await axios({
-            method: 'post',
-            url: 'http://127.0.0.1:8000/api/user/categoryitems',
-            data: cat_data
-        }).then(function (response) {
-            fltr_items = response.data;
-        })
+            await axios({
+                method: 'post',
+                url: 'http://127.0.0.1:8000/api/user/categoryitems',
+                data: cat_data
+            }).then(function (response) {
+                fltr_items = response.data;
+            })
 
-        items_container.innerHTML = ""
-        for (const a in fltr_items['items']) {
-            var item = fltr_items['items'][a];
-            // check if item is favorited by user and set it red if yes
-            var fav_pre = ``
-            if (fav_ids.includes(item['id'])) {
-                fav_pre = `style="background-color:red;"`
-            }
+            items_container.innerHTML = ""
+            for (const a in fltr_items['items']) {
+                var item = fltr_items['items'][a];
+                // check if item is favorited by user and set it red if yes
+                var fav_pre = ``
+                if (fav_ids.includes(item['id'])) {
+                    fav_pre = `style="background-color:red;"`
+                }
 
 
 
-            const card = document.createElement('div');
-            card.className = "list-item"
-            card.innerHTML = `<img src="${item['image']}" class="banner-image">
+                const card = document.createElement('div');
+                card.className = "list-item"
+                card.innerHTML = `<img src="${item['image']}" class="banner-image">
                                     <div class="item-info-container">
                                         <div>
-                                            <p>name: ${item['name']}</p>
-                                            <p>price: ${item['price']} $</p>
+                                            <p class="item-name">${item['name']}</p>
+                                            <p class="item-price">${item['price']} $</p>
                                         </div>
                                         <button id="item_${item['id']}" class="fav-btn" ${fav_pre}>fav</button>
                                         </div>
                                     </div>`;
 
-            items_container.appendChild(card);
-        }
+                items_container.appendChild(card);
+            }
 
-        var fav_btns = document.getElementsByClassName("fav-btn");
-        for (const element of fav_btns) {
-
-
-            let eid = element.id.split('_')[1]
-            eid = parseInt(eid)
-
-            // if (fav_ids.includes(eid)) {
-            //     element.style.backgroundColor = "red"
-            // }
+            var fav_btns = document.getElementsByClassName("fav-btn");
+            for (const element of fav_btns) {
 
 
-            element.addEventListener("click", async function () {
-                // console.log(element.id)
-                let fav_data = new FormData()
-                fav_data.append('user_id', user_id)
-                fav_data.append('item_id', eid)
-                await axios({
-                    method: 'post',
-                    url: 'http://127.0.0.1:8000/api/setfavorite',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Accept': 'application/json'
-                    },
-                    data: fav_data
-                }).then(function (response) {
-                    // apped the item to the favorited items list
-                    element.style.backgroundColor = "red"
-                    fav_ids.push(eid)
+                let eid = element.id.split('_')[1]
+                eid = parseInt(eid)
 
-                }).catch(function (err) {
-                    // this happens when trying to favorite without being logged in
-                    if (err.response['statusText'] == 'Unauthorized') {
-                        alert("Login first")
-                    }
+                // if (fav_ids.includes(eid)) {
+                //     element.style.backgroundColor = "red"
+                // }
+
+
+                element.addEventListener("click", async function () {
+                    // console.log(element.id)
+                    let fav_data = new FormData()
+                    fav_data.append('user_id', user_id)
+                    fav_data.append('item_id', eid)
+                    await axios({
+                        method: 'post',
+                        url: 'http://127.0.0.1:8000/api/setfavorite',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Accept': 'application/json'
+                        },
+                        data: fav_data
+                    }).then(function (response) {
+                        // apped the item to the favorited items list
+                        element.style.backgroundColor = "red"
+                        fav_ids.push(eid)
+
+                    }).catch(function (err) {
+                        // this happens when trying to favorite without being logged in
+                        if (err.response['statusText'] == 'Unauthorized') {
+                            alert("Login first")
+                        }
+                    })
+
                 })
-
-            })
+            }
         }
-    }
     })
 
 
@@ -203,7 +205,10 @@ window.onload = async function () {
 
 
 
-    async function populateAll(){
+
+    async function populateAll() {
+        
+        document.body.style.backgroundImage = `url('./assets/images/0.jpg')`;
 
         for (var i = 0; i < all_items['items'].length; i++) {
 
@@ -212,38 +217,38 @@ window.onload = async function () {
             if (fav_ids.includes(item['id'])) {
                 fav_pre = `style="background-color:red;"`
             }
-    
+
             const card = document.createElement('div');
             card.className = "list-item"
             card.innerHTML = `<img src="${item['image']}" class="banner-image">
                                     <div class="item-info-container">
                                         <div>
-                                            <p>name: ${item['name']}</p>
-                                            <p>price: ${item['price']} $</p>
+                                            <p class="item-name">${item['name']}</p>
+                                            <p class="item-price">${item['price']} $</p>
                                         </div>
                                         <button id="item_${item['id']}" class="fav-btn" ${fav_pre}>fav</button>
                                         </div>
                                     </div>`;
-    
+
             items_container.appendChild(card);
         }
-    
+
         // get all fav btns 
         var fav_btns = document.getElementsByClassName("fav-btn");
-    
+
         for (const element of fav_btns) {
             let eid = element.id.split('_')[1]
             eid = parseInt(eid)
-    
+
             // if (fav_ids.includes(eid)) {
             //     element.style.backgroundColor = "red"
             // }
-    
-    
+
+
             element.addEventListener("click", async function () {
                 // console.log(eid)
-    
-    
+
+
                 let fav_data = new FormData()
                 fav_data.append('user_id', user_id)
                 fav_data.append('item_id', eid)
@@ -259,15 +264,15 @@ window.onload = async function () {
                     element.style.backgroundColor = "red"
                     fav_ids.push(eid)
                     // console.log(response)
-    
+
                 }).catch(function (err) {
                     if (err.response['statusText'] == 'Unauthorized') {
                         alert("Login first")
                     }
                 })
-    
-    
-    
+
+
+
             })
         }
     }
