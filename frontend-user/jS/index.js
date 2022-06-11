@@ -7,10 +7,26 @@ window.onload = async function () {
     var user_id;
     var all_items;
     var fav_ids = [];
+    
     // console.log(token)
-    log_link.addEventListener('click', function () {
+    log_link.addEventListener('click', async function () {
         if (token) {
             localStorage.removeItem('token')
+
+
+            await axios({
+                method: 'post',
+                url: 'http://127.0.0.1:8000/api/logout',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Accept': 'application/json'
+                },
+            }).then(function (response) {
+
+            }).catch(function (err) {
+                console.log(err)
+            })
+
             location.reload()
         } else {
             location.href = "login.html"
@@ -188,7 +204,7 @@ window.onload = async function () {
 
 
     async function populateAll(){
-        console.log('populating')
+
         for (var i = 0; i < all_items['items'].length; i++) {
 
             var item = all_items['items'][i];
