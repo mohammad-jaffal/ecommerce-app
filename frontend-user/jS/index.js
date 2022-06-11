@@ -5,7 +5,7 @@ window.onload = async function () {
     var log_link = document.getElementById("log_link")
     var favorite_items;
     var user_id;
-    var items;
+    var all_items;
     var fav_ids = [];
     // console.log(token)
     log_link.addEventListener('click', function () {
@@ -21,7 +21,6 @@ window.onload = async function () {
         log_link.innerHTML = '<p>LogOut</p>'
 
         // get user id
-
         await axios({
             method: 'post',
             url: 'http://127.0.0.1:8000/api/profile',
@@ -52,10 +51,7 @@ window.onload = async function () {
         for (const item of favorite_items) {
             fav_ids.push(item['id'])
         }
-        // console.log(fav_ids)
-        // if(fav_ids.includes(8)){
-        //     console.log("its in")
-        // }
+       
 
 
     }
@@ -86,8 +82,8 @@ window.onload = async function () {
     document.getElementById("filter_btn").addEventListener('click', async function () {
         var cat_id = cat_filter.value
         if (cat_id == "all") {
-            location.reload()
-        }
+            populateAll()
+        }else{
 
         // get items by category name
         var cat_data = new FormData()
@@ -98,13 +94,13 @@ window.onload = async function () {
             url: 'http://127.0.0.1:8000/api/user/categoryitems',
             data: cat_data
         }).then(function (response) {
-            items = response.data;
+            fltr_items = response.data;
         })
 
         items_container.innerHTML = ""
-        for (const a in items['items']) {
-            var item = items['items'][a];
-
+        for (const a in fltr_items['items']) {
+            var item = fltr_items['items'][a];
+            // check if item is favorited by user and set it red if yes
             var fav_pre = ``
             if (fav_ids.includes(item['id'])) {
                 fav_pre = `style="background-color:red;"`
@@ -134,9 +130,9 @@ window.onload = async function () {
             let eid = element.id.split('_')[1]
             eid = parseInt(eid)
 
-            if (fav_ids.includes(eid)) {
-                element.style.backgroundColor = "red"
-            }
+            // if (fav_ids.includes(eid)) {
+            //     element.style.backgroundColor = "red"
+            // }
 
 
             element.addEventListener("click", async function () {
@@ -153,20 +149,20 @@ window.onload = async function () {
                     },
                     data: fav_data
                 }).then(function (response) {
+                    // apped the item to the favorited items list
                     element.style.backgroundColor = "red"
                     fav_ids.push(eid)
-                    // console.log(response)
 
                 }).catch(function (err) {
+                    // this happens when trying to favorite without being logged in
                     if (err.response['statusText'] == 'Unauthorized') {
                         alert("Login first")
                     }
                 })
 
-
-
             })
         }
+    }
     })
 
 
@@ -178,69 +174,90 @@ window.onload = async function () {
         method: 'get',
         url: 'http://127.0.0.1:8000/api/user/allitems',
     }).then(function (response) {
-        items = response.data;
+        all_items = response.data;
     })
-
+    // create card for each item
     items_container.innerHTML = ""
-    for (var i = 0; i < items['items'].length; i++) {
+    populateAll()
 
-        var item = items['items'][i];
 
-        const card = document.createElement('div');
-        card.className = "list-item"
-        card.innerHTML = `<img src="${item['image']}" class="banner-image">
-                                <div class="item-info-container">
-                                    <div>
-                                        <p>name: ${item['name']}</p>
-                                        <p>price: ${item['price']} $</p>
-                                    </div>
-                                    <button id="item_${item['id']}" class="fav-btn">fav</button>
-                                    </div>
-                                </div>`;
 
-        items_container.appendChild(card);
-    }
 
-    var fav_btns = document.getElementsByClassName("fav-btn");
 
-    for (const element of fav_btns) {
 
-        let eid = element.id.split('_')[1]
-        eid = parseInt(eid)
 
-        if (fav_ids.includes(eid)) {
-            element.style.backgroundColor = "red"
+
+    async function populateAll(){
+        console.log('populating')
+        for (var i = 0; i < all_items['items'].length; i++) {
+
+            var item = all_items['items'][i];
+            var fav_pre = ``
+            if (fav_ids.includes(item['id'])) {
+                fav_pre = `style="background-color:red;"`
+            }
+    
+            const card = document.createElement('div');
+            card.className = "list-item"
+            card.innerHTML = `<img src="${item['image']}" class="banner-image">
+                                    <div class="item-info-container">
+                                        <div>
+                                            <p>name: ${item['name']}</p>
+                                            <p>price: ${item['price']} $</p>
+                                        </div>
+                                        <button id="item_${item['id']}" class="fav-btn" ${fav_pre}>fav</button>
+                                        </div>
+                                    </div>`;
+    
+            items_container.appendChild(card);
         }
-
-
-        element.addEventListener("click", async function () {
-            // console.log(eid)
-
-
-            let fav_data = new FormData()
-            fav_data.append('user_id', user_id)
-            fav_data.append('item_id', eid)
-            await axios({
-                method: 'post',
-                url: 'http://127.0.0.1:8000/api/setfavorite',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Accept': 'application/json'
-                },
-                data: fav_data
-            }).then(function (response) {
-                element.style.backgroundColor = "red"
-                fav_ids.push(eid)
-                // console.log(response)
-
-            }).catch(function (err) {
-                if (err.response['statusText'] == 'Unauthorized') {
-                    alert("Login first")
-                }
+    
+        // get all fav btns 
+        var fav_btns = document.getElementsByClassName("fav-btn");
+    
+        for (const element of fav_btns) {
+            let eid = element.id.split('_')[1]
+            eid = parseInt(eid)
+    
+            // if (fav_ids.includes(eid)) {
+            //     element.style.backgroundColor = "red"
+            // }
+    
+    
+            element.addEventListener("click", async function () {
+                // console.log(eid)
+    
+    
+                let fav_data = new FormData()
+                fav_data.append('user_id', user_id)
+                fav_data.append('item_id', eid)
+                await axios({
+                    method: 'post',
+                    url: 'http://127.0.0.1:8000/api/setfavorite',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/json'
+                    },
+                    data: fav_data
+                }).then(function (response) {
+                    element.style.backgroundColor = "red"
+                    fav_ids.push(eid)
+                    // console.log(response)
+    
+                }).catch(function (err) {
+                    if (err.response['statusText'] == 'Unauthorized') {
+                        alert("Login first")
+                    }
+                })
+    
+    
+    
             })
-
-
-
-        })
+        }
     }
+
+
+
+
+
 }
