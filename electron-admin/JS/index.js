@@ -34,7 +34,6 @@ window.onload = function () {
                 }).then(function (response) {
                     li_type = response.data["type"]
                     if(li_type){
-                        alert('hes an admin!')
                         localStorage.setItem('token', token)
                         location.href = "admin.html"
 

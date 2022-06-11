@@ -1,12 +1,42 @@
 window.onload = async function () {
 
     var token = localStorage.getItem('token')
-    // alert(token)
+
+    if(!token){
+        location.href = "index.html"
+    }
+
     var categories = document.getElementById('categories')
     var item_name = document.getElementById('item_name')
     var item_price = document.getElementById('item_price')
     var item_image = document.getElementById('item_image')
     var add_btn = document.getElementById('add_btn')
+
+
+
+
+
+
+    document.getElementById('log_out').addEventListener('click', async function () {
+        alert('logging out')
+        localStorage.removeItem('token')
+
+
+        await axios({
+            method: 'post',
+            url: 'http://127.0.0.1:8000/api/logout',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/json'
+            },
+        })
+
+        location.reload()
+
+
+    })
+
+
 
 
 
@@ -22,10 +52,9 @@ window.onload = async function () {
     })
 
 
-
-
+    // adding an item
     add_btn.addEventListener('click', async function () {
-        
+
         if (item_name.value == "" || item_price.value == "" || item_image.files.length == 0) {
             alert("fill all")
         } else {
@@ -53,7 +82,7 @@ window.onload = async function () {
                     let data = new FormData();
                     data.append('name', item_name.value);
                     data.append('price', price);
-                    data.append('image', "data:image/png;base64,"+base64String);
+                    data.append('image', "data:image/png;base64," + base64String);
                     data.append('category_id', cat_id);
 
                     axios({
@@ -62,9 +91,10 @@ window.onload = async function () {
                         data: data,
                     }).then(function (response) {
 
-                        if(response.data['success']){
+                        if (response.data['success']) {
                             alert("Item added")
-                        }else{
+                            location.reload()
+                        } else {
                             alert("Something went wrong")
                         }
                     })
@@ -72,39 +102,7 @@ window.onload = async function () {
                 reader.readAsDataURL(selectedFile);
 
 
-
-
-
-
-            // console.log(li_email.value)
-            // console.log(li_password.value)
-            // var data = new FormData()
-            // data.append("email", li_email.value)
-            // data.append("password", li_password.value)
-
-            // await axios({
-            //     method: 'post',
-            //     url: 'http://127.0.0.1:8000/api/login',
-            //     data: data,
-            // }).then(async function (response) {
-
-            // }).catch(function (err) {
-            //     alert('wrong info')
-            // })
-
-
-
-
-
-
-
-
-
-
-
-
-
-            }else{
+            } else {
                 alert("Must input numbers")
             }
 
