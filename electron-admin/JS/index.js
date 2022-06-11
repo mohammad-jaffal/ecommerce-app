@@ -48,11 +48,6 @@ window.onload = function () {
                     alert("this shouldnt happen :)")
                 })
 
-
-
-
-
-
             }).catch(function (err) {
                 alert('wrong info')
             })
