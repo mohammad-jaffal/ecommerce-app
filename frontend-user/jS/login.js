@@ -23,6 +23,7 @@ window.onload = function () {
     var li_email = document.getElementById("li_email");
     var li_password = document.getElementById("li_password");
 
+    document.body.style.backgroundImage = `url('./assets/images/li.jpg')`;
 
     // log in
     li_btn.addEventListener('click', function () {

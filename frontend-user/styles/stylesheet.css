@@ -195,7 +195,8 @@ body{
 
 
 .login-form-container {
-    margin-top: 10%;
+
+    margin-top: 15%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -203,10 +204,14 @@ body{
     height: fit-content;
     padding: 20px;
     border-radius: 10px;
-    background-color: rgba(0, 0, 0, 0.2);
+    background-color: rgba(0, 0, 0, 0.3);
     /* color: white; */
     opacity: .9;
 }
+
+
+
+
 
 
 .form-group {
@@ -232,6 +237,7 @@ body{
     flex-direction: column;
     justify-content: center;
     width: 10%;
+    color: white;
 }
 
 .li-btn {
@@ -249,7 +255,7 @@ body{
 }
 
 #create_link {
-    /* color: white; */
+    color: white;
     font-size: 18px;
     cursor: pointer;
     align-self: center;
