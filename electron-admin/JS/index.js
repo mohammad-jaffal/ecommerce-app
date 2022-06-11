@@ -5,7 +5,7 @@ window.onload = function () {
     var li_password = document.getElementById('li_password')
     var li_btn = document.getElementById('li_btn')
 
-    li_btn.addEventListener('click', function () {
+    li_btn.addEventListener('click', async function () {
 
         if (li_email.value == "" || li_password.value == "") {
             alert("fill all")
@@ -16,16 +16,14 @@ window.onload = function () {
             data.append("email", li_email.value)
             data.append("password", li_password.value)
 
-            axios({
+            await axios({
                 method: 'post',
                 url: 'http://127.0.0.1:8000/api/login',
                 data: data,
-            }).then(function (response) {
+            }).then( async function (response) {
                 var token = response.data['access_token'];
-                alert(token)
-                localStorage.setItem('token', token)
-                location.href = "admin.html"
-
+                
+            
                 await axios({
                     method: 'post',
                     url: 'http://127.0.0.1:8000/api/profile',
@@ -34,10 +32,20 @@ window.onload = function () {
                         'Accept': 'application/json'
                     },
                 }).then(function (response) {
-                    user_id = response.data["id"]
-                    alert(user_id)
+                    li_type = response.data["type"]
+                    if(li_type){
+                        alert('hes an admin!')
+                        localStorage.setItem('token', token)
+                        location.href = "admin.html"
+
+                    }else{
+                        alert("go to ur website :)")
+                        location.reload()
+                    }
+                    // alert(li_type)
+
                 }).catch(function (err) {
-                    alert("m"+err)
+                    alert("this shouldnt happen :)")
                 })
 
 
@@ -45,12 +53,8 @@ window.onload = function () {
 
 
 
-
-
-
-
             }).catch(function (err) {
-                alert(err)
+                alert('wrong info')
             })
         }
     })
