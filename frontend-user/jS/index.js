@@ -93,7 +93,7 @@ window.onload = async function () {
         if (cat_id == "all") {
             populateAll()
         } else {
-            document.body.style.backgroundImage = `url('./assets/images/${cat_id}.jpg')`;
+            document.body.style.backgroundImage = `-webkit-linear-gradient(left, rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('./assets/images/${cat_id}.jpg')`;
 
             // get items by category name
             var cat_data = new FormData()
@@ -219,7 +219,7 @@ window.onload = async function () {
     async function populateAll() {
         items_container.innerHTML = ""
 
-        document.body.style.backgroundImage = `url('./assets/images/0.jpg')`;
+        document.body.style.backgroundImage = `-webkit-linear-gradient(left, rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('./assets/images/0.jpg')`;
 
         for (var i = 0; i < all_items['items'].length; i++) {
 
@@ -238,8 +238,7 @@ window.onload = async function () {
                                             <p class="item-price">${item['price']} $</p>
                                         </div>
                                         <button id="item_${item['id']}" class="fav-btn" ${fav_pre}>❤</button>
-                                        </div>
-                                    </div>`;
+                                        </div>`;
 
             items_container.appendChild(card);
         }
