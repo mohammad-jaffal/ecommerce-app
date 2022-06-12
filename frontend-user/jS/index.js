@@ -88,7 +88,7 @@ window.onload = async function () {
 
 
     // on filter category
-    document.getElementById("filter_btn").addEventListener('click', async function () {
+    cat_filter.addEventListener('change', async function () {
         var cat_id = cat_filter.value
         if (cat_id == "all") {
             populateAll()
