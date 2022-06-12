@@ -89,7 +89,7 @@ window.onload = async function () {
 
     // adding an item
     add_btn.addEventListener('click', async function () {
-
+        // alert('clicked')
         if (item_name.value == "" || item_price.value == "" || item_image.files.length == 0) {
             alert("fill all")
         } else {
@@ -98,8 +98,7 @@ window.onload = async function () {
             var price = item_price.value;
             var regex = /^[0-9,\.]+$/;
             if (price.match(regex)) {
-                // alert('good');
-
+                
 
                 // convert image to base64
                 var base64String = "";
@@ -107,7 +106,7 @@ window.onload = async function () {
                 var reader = new FileReader();
 
 
-                reader.onload = function () {
+                reader.onload = async function () {
                     base64String = reader.result.replace("data:", "")
                         .replace(/^.+,/, "");
                     imageBase64Stringsep = base64String;
@@ -122,7 +121,7 @@ window.onload = async function () {
 
 
 
-                    axios({
+                    await axios({
                         method: 'post',
                         url: 'http://127.0.0.1:8000/api/admin/additem',
                         data: data,
@@ -134,6 +133,8 @@ window.onload = async function () {
                         } else {
                             alert("Something went wrong")
                         }
+                    }).catch(function(err){
+                        console.log(err)
                     })
                 }
                 reader.readAsDataURL(selectedFile);

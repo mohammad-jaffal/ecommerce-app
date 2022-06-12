@@ -70,8 +70,6 @@ window.onload = async function () {
             fav_ids.push(item['id'])
         }
 
-
-
     }
 
     var cat_filter = document.getElementById("categories")
@@ -304,7 +302,7 @@ window.onload = async function () {
                         if (response.data['success']) {
                             element.style.color = "red"
                             fav_ids.push(eid)
-                            console.log('pushed')
+                            // console.log('pushed')
                             // console.log(fav_ids);
 
                         }
