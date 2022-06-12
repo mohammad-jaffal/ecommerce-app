@@ -274,7 +274,7 @@ body{
 }
 
 
-@media (max-width: 1320px) {
+@media (max-width: 1350px) {
     .items-container {
         width: 80%;
         justify-content: center;

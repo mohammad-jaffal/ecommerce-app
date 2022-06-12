@@ -10,10 +10,11 @@ window.onload = async function () {
     var glob = document.getElementById("glob")
 
     // console.log(token)
+
+    // for logout
     log_link.addEventListener('click', async function () {
         if (token) {
             localStorage.removeItem('token')
-
 
             await axios({
                 method: 'post',
@@ -73,9 +74,7 @@ window.onload = async function () {
 
     }
 
-
     var cat_filter = document.getElementById("categories")
-
 
     // getting all categories
     await axios({
@@ -87,11 +86,6 @@ window.onload = async function () {
             cat_filter.innerHTML += `<option value="${cats['categories'][i]['id']}">${cats['categories'][i]['name']}</option>`
         }
     })
-
-
-
-
-
 
 
 
@@ -124,8 +118,6 @@ window.onload = async function () {
                     fav_pre = `style="color:red;"`
                 }
 
-
-
                 const card = document.createElement('div');
                 card.className = "list-item"
                 card.innerHTML = `<img src="${item['image']}" class="banner-image">
@@ -144,47 +136,72 @@ window.onload = async function () {
             var fav_btns = document.getElementsByClassName("fav-btn");
             for (const element of fav_btns) {
 
-
                 let eid = element.id.split('_')[1]
                 eid = parseInt(eid)
 
-                // if (fav_ids.includes(eid)) {
-                //     element.style.backgroundColor = "red"
-                // }
-
-
+                // add event listener for each fav button
                 element.addEventListener("click", async function () {
-                    // console.log(element.id)
                     let fav_data = new FormData()
                     fav_data.append('user_id', user_id)
                     fav_data.append('item_id', eid)
-                    await axios({
-                        method: 'post',
-                        url: 'http://127.0.0.1:8000/api/setfavorite',
-                        headers: {
-                            'Authorization': `Bearer ${token}`,
-                            'Accept': 'application/json'
-                        },
-                        data: fav_data
-                    }).then(function (response) {
-                        // apped the item to the favorited items list
-                        element.style.color = "red"
-                        fav_ids.push(eid)
+                    // console.log(eid)
+                    if (fav_ids.includes(eid)) {
 
-                    }).catch(function (err) {
-                        // this happens when trying to favorite without being logged in
-                        if (err.response['statusText'] == 'Unauthorized') {
-                            alert("Login first")
-                        }
-                    })
+                        // removing from favs
+                        await axios({
+                            method: 'post',
+                            url: 'http://127.0.0.1:8000/api/user/removefavorite',
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Accept': 'application/json'
+                            },
+                            data: fav_data
+                        }).then(function (response) {
+                            // remove the item from the favorited items list
+                            if (response.data['success']) {
+                                element.style.color = "black"
+                                // console.log('removed')
+
+                                fav_ids = fav_ids.filter(function (x) {
+                                    return x !== eid;
+                                });
+                                // console.log(fav_ids);
+                            }
+                        })
+
+                    } else {
+                        // set item as favorite
+                        await axios({
+                            method: 'post',
+                            url: 'http://127.0.0.1:8000/api/setfavorite',
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                                'Accept': 'application/json'
+                            },
+                            data: fav_data
+                        }).then(function (response) {
+                            // append the item to the favorited items list
+
+                            if (response.data['success']) {
+                                element.style.color = "red"
+                                fav_ids.push(eid)
+                                // console.log('pushed')
+
+                            }
+
+                        }).catch(function (err) {
+                            // this happens when trying to favorite without being logged in
+                            if (err.response['statusText'] == 'Unauthorized') {
+                                alert("Login first")
+                            }
+                        })
+                    }
 
                 })
             }
+
         }
     })
-
-
-
 
 
     // get all items
@@ -201,14 +218,10 @@ window.onload = async function () {
 
 
 
-
-
-
-
-
+    // shows all items
     async function populateAll() {
         items_container.innerHTML = ""
-        
+
         document.body.style.backgroundImage = `url('./assets/images/0.jpg')`;
 
         for (var i = 0; i < all_items['items'].length; i++) {
@@ -234,6 +247,8 @@ window.onload = async function () {
             items_container.appendChild(card);
         }
 
+
+
         // get all fav btns 
         var fav_btns = document.getElementsByClassName("fav-btn");
 
@@ -241,45 +256,69 @@ window.onload = async function () {
             let eid = element.id.split('_')[1]
             eid = parseInt(eid)
 
-            // if (fav_ids.includes(eid)) {
-            //     element.style.backgroundColor = "red"
-            // }
-
 
             element.addEventListener("click", async function () {
-                // console.log(eid)
-
-
                 let fav_data = new FormData()
                 fav_data.append('user_id', user_id)
                 fav_data.append('item_id', eid)
-                await axios({
-                    method: 'post',
-                    url: 'http://127.0.0.1:8000/api/setfavorite',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                        'Accept': 'application/json'
-                    },
-                    data: fav_data
-                }).then(function (response) {
-                    element.style.color = "red"
-                    fav_ids.push(eid)
-                    // console.log(response)
+                // console.log(eid)
+                if (fav_ids.includes(eid)) {
 
-                }).catch(function (err) {
-                    if (err.response['statusText'] == 'Unauthorized') {
-                        alert("Login first")
-                    }
-                })
+                    // removing from favs
+                    await axios({
+                        method: 'post',
+                        url: 'http://127.0.0.1:8000/api/user/removefavorite',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Accept': 'application/json'
+                        },
+                        data: fav_data
+                    }).then(function (response) {
+                        // remove the item from the favorited items list
+                        if (response.data['success']) {
 
+                            element.style.color = "black"
+                            // console.log('removed')
 
+                            fav_ids = fav_ids.filter(function (x) {
+                                return x !== eid;
+                            });
 
+                            // console.log(fav_ids);
+                        }
+
+                    })
+
+                } else {
+
+                    await axios({
+                        method: 'post',
+                        url: 'http://127.0.0.1:8000/api/setfavorite',
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Accept': 'application/json'
+                        },
+                        data: fav_data
+                    }).then(function (response) {
+                        // append the item to the favorited items list
+
+                        if (response.data['success']) {
+                            element.style.color = "red"
+                            fav_ids.push(eid)
+                            console.log('pushed')
+                            // console.log(fav_ids);
+
+                        }
+
+                    }).catch(function (err) {
+                        // this happens when trying to favorite without being logged in
+
+                        if (err.response['statusText'] == 'Unauthorized') {
+                            alert("Login first")
+                        }
+                    })
+                }
             })
         }
     }
-
-
-
-
-
 }
