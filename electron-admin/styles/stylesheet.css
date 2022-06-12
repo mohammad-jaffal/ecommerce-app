@@ -166,3 +166,22 @@ body {
 .header-option>p {
     cursor: pointer;
 }
+
+
+
+#add_cat_form {
+    display: none;
+}
+
+
+#x_icon {
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 30px;
+}
+
+.x-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}

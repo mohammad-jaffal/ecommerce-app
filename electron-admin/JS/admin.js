@@ -11,10 +11,45 @@ window.onload = async function () {
     var item_price = document.getElementById('item_price')
     var item_image = document.getElementById('item_image')
     var add_btn = document.getElementById('add_btn')
+    var add_form = document.getElementById('add_form')
+    var add_cat_form = document.getElementById('add_cat_form')
 
 
+    
 
+    document.getElementById('add_cat').addEventListener('click', async function(){
+        add_form.style.display="none"
+        add_cat_form.style.display="flex"
+    })
 
+    document.getElementById('x_icon').addEventListener('click', function(){
+        add_form.style.display="flex"
+        add_cat_form.style.display="none"
+    })
+
+    var cat_name = document.getElementById('cat_name')
+    document.getElementById('add_cat_btn').addEventListener('click', async function () {
+        if(cat_name.value == ""){
+            alert('enter name')
+        }else{
+            
+            let cat_data = new FormData();
+            cat_data.append('name', cat_name.value);
+            await axios({
+                method: 'post',
+                url: 'http://127.0.0.1:8000/api/admin/addcategory',
+                data: cat_data
+            }).then(function (response) {
+
+                if (response.data['success']) {
+                    location.reload()
+                } else {
+                    alert("Something went wrong")
+                }
+            })
+
+        }
+    })
 
 
     document.getElementById('log_out').addEventListener('click', async function () {

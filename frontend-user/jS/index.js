@@ -217,7 +217,6 @@ window.onload = async function () {
 
 
 
-
     // shows all items
     async function populateAll() {
         items_container.innerHTML = ""
